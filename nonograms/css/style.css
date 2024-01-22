@@ -1,0 +1,64 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: rgb(195, 192, 189);
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%;
+}
+
+.no-scroll {
+  overflow: hidden;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width:80vw;
+  height: 480px;
+  margin: 5px;
+  border: 1px solid #000;
+}
+
+table {
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.fieldLeft {
+  background-color: rgb(180, 178, 178);
+  border: 1px solid rgb(180, 178, 178);
+}
+
+td,
+th {
+  border: 1px solid black;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 16px;
+}
+
+
+th {
+  background-color: grey;
+}
+
+.number {
+  background-color: white;
+}
+
+
+.gameField {
+  background-color: white;
+}
+
