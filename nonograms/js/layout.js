@@ -1,4 +1,4 @@
-const nonogramData = [
+export const nonogramData = [
   ['', '', '', '0', '0', '0', '0', '0'],
   ['', '', '', '5', '1', '1', '1', '5'],
   ['0', '1', '1', 'a', 'x', 'x', 'x', 'a'],
@@ -8,4 +8,10 @@ const nonogramData = [
   ['0', '1', '1', 'a', 'x', 'x', 'x', 'a'],
 ];
 
-export default nonogramData;
+export const nonogramGameField = [
+  ['a', 'x', 'x', 'x', 'a'],
+  ['a', 'a', 'x', 'x', 'a'],
+  ['a', 'x', 'a', 'x', 'a'],
+  ['a', 'x', 'x', 'a', 'a'],
+  ['a', 'x', 'x', 'x', 'a'],
+];
