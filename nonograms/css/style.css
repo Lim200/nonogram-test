@@ -30,8 +30,12 @@ table {
   border-collapse: collapse;
   margin: 0;
   padding: 0;
-  border: none;
+  border: 3px solid black;
 }
+
+/* .nonogramTable {
+  border: 3px solid black;
+} */
 
 .fieldLeft {
   background-color: rgb(180, 178, 178);
