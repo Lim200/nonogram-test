@@ -69,11 +69,11 @@ th {
 }
 
 .crossedField {
-  background: white url("../assets/img/cross.gif") no-repeat center center;
+  background: white url("../assets/img/cross.png") no-repeat center center;
   background-size: contain;
 }
 
 .crossedTip {
-  background: white url("../assets/img/cross.gif") no-repeat center center;
+  background: white url("../assets/img/cross.png") no-repeat center center;
   background-size: contain;
 }
