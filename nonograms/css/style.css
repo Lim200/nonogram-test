@@ -27,6 +27,19 @@ body {
   border: 1px solid #000;
 }
 
+
+.gameArea {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-left: 5px;
+  margin-right: 15px;
+}
+
+
 table {
   border-collapse: collapse;
   margin: 0;
@@ -80,6 +93,18 @@ th {
   background-size: contain;
 }
 
+.controlArea {
+  display: flex;
+  flex-direction: column;
+  width: 68%;
+  height: 90%;
+  justify-content: center;
+  align-items: center;
+  padding-top: 5px;
+  gap: 8px;
+  border: 1px solid #000;
+}
+
 .bnt_clean {
   display: inline-flex;
   border-radius: 6px;
@@ -88,6 +113,7 @@ th {
   background: rgb(57, 55, 55);
   justify-content: center;
   align-items: center;
+  color: white;
   cursor: pointer;
 }
 
@@ -95,6 +121,21 @@ th {
   background: rgb(118, 114, 114);
 }
 
+.bnt_open {
+  display: inline-flex;
+  border-radius: 6px;
+  border: 1px solid black;
+  padding: 5px 10px;
+  background: rgb(57, 55, 55);
+  justify-content: center;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+}
+
+.bnt_open:hover {
+  background: rgb(118, 114, 114);
+}
 /* ---------- pop_up  */
 
 .pop_up_modal {
