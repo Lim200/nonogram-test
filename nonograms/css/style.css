@@ -27,7 +27,6 @@ body {
   border: 1px solid #000;
 }
 
-
 .gameArea {
   width: 50%;
   height: 100%;
@@ -39,6 +38,12 @@ body {
   margin-right: 15px;
 }
 
+.timeArea {
+  display: flex;
+  /* flex-direction: column; */
+  /* padding-top: 5px; */
+  gap: 8px;
+}
 
 table {
   border-collapse: collapse;
@@ -136,6 +141,38 @@ th {
 .bnt_open:hover {
   background: rgb(118, 114, 114);
 }
+
+.bnt_save {
+  display: inline-flex;
+  border-radius: 6px;
+  border: 1px solid black;
+  padding: 5px 10px;
+  background: rgb(57, 55, 55);
+  justify-content: center;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+}
+
+.bnt_save:hover {
+  background: rgb(118, 114, 114);
+}
+
+.bnt_сontinue {
+  display: inline-flex;
+  border-radius: 6px;
+  border: 1px solid black;
+  padding: 5px 10px;
+  background: rgb(57, 55, 55);
+  justify-content: center;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+}
+
+.bnt_сontinue:hover {
+  background: rgb(118, 114, 114);
+}
 /* ---------- pop_up  */
 
 .pop_up_modal {
@@ -166,7 +203,7 @@ th {
   align-items: center;
   position: absolute;
   border-radius: 40px;
-  background: rgb(196, 202, 244);
+  background: rgb(180, 178, 178);
 }
 
 .modal_window__text {
@@ -189,8 +226,13 @@ th {
   border-radius: 6px;
   border: 1px solid black;
   padding: 5px 10px;
-  background: rgb(101, 115, 223);
+  background: rgb(57, 55, 55);
+  color: white;
   justify-content: center;
   align-items: center;
   cursor: pointer;
+}
+
+.modal_window__bnt:hover {
+  background: rgb(118, 114, 114);
 }
