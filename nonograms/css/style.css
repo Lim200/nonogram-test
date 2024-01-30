@@ -50,6 +50,7 @@ table {
   margin: 0;
   padding: 0;
   border: 3px solid black;
+  color: white;
 }
 
 /* .nonogramTable {
@@ -59,6 +60,11 @@ table {
 .fieldLeft {
   background-color: rgb(180, 178, 178);
   border: 1px solid rgb(180, 178, 178);
+}
+
+.fieldLeftDark {
+  background-color: rgb(111, 110, 110);
+  border: 1px solid rgb(111, 110, 110);
 }
 
 td,
@@ -73,6 +79,15 @@ th {
 
 th {
   background-color: grey;
+}
+
+.fieldLeftDark {
+  background-color: rgb(111, 110, 110);
+  border: 1px solid rgb(111, 110, 110);
+}
+
+.tips {
+  background-color: rgb(179, 178, 178);
 }
 
 .number {
@@ -173,6 +188,23 @@ th {
 .bnt_сontinue:hover {
   background: rgb(118, 114, 114);
 }
+
+.bnt_dark {
+  display: inline-flex;
+  border-radius: 6px;
+  border: 1px solid black;
+  padding: 5px 10px;
+  background: rgb(57, 55, 55);
+  justify-content: center;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+}
+
+.bnt_dark:hover {
+  background: rgb(118, 114, 114);
+}
+
 /* ---------- pop_up  */
 
 .pop_up_modal {
@@ -235,4 +267,28 @@ th {
 
 .modal_window__bnt:hover {
   background: rgb(118, 114, 114);
+}
+
+/* --------Dark Mode------------ */
+
+.darkMode .button {
+  background-color: rgb(118, 114, 114);
+  color: black;
+}
+
+.darkMode .number .gameField {
+  background-color: rgb(118, 114, 114);
+}
+
+.darkMode {
+  background-color: rgb(68, 68, 67);
+  color: white;
+}
+
+.darkMode .blackField {
+  background-color: white;
+}
+
+.darkMode .gameField {
+  background-color: black;
 }

@@ -140,16 +140,20 @@ function drawPage() {
   controlArea.className = "controlArea";
 
   const cleanButton = document.createElement("button");
-  cleanButton.className = "bnt_clean";
+  cleanButton.className = "bnt_clean button";
   cleanButton.textContent = "Reset game";
 
   const saveButton = document.createElement("button");
-  saveButton.className = "bnt_save";
+  saveButton.className = "bnt_save button";
   saveButton.textContent = "Save game";
 
   const сontinueButton = document.createElement("button");
-  сontinueButton.className = "bnt_сontinue";
+  сontinueButton.className = "bnt_сontinue button";
   сontinueButton.textContent = "Сontinue last game";
+
+  const darkButton = document.createElement("button");
+  darkButton.className = "bnt_dark button";
+  darkButton.textContent = "Dark";
 
   const levelLabel = document.createElement("label");
   levelLabel.htmlFor = "level";
@@ -180,7 +184,7 @@ function drawPage() {
   });
 
   const openButton = document.createElement("button");
-  openButton.className = "bnt_open";
+  openButton.className = "bnt_open button";
   openButton.textContent = "Open";
 
   document.body.innerHTML = "";
@@ -199,6 +203,7 @@ function drawPage() {
   controlArea.appendChild(openButton);
   controlArea.appendChild(saveButton);
   controlArea.appendChild(сontinueButton);
+  controlArea.appendChild(darkButton);
 
   document.querySelector(".bnt_clean").addEventListener("click", () => {
     // body.classList.remove('no-scroll');
@@ -225,7 +230,48 @@ function drawPage() {
     restoreGame();
   });
 
+  document.querySelector(".bnt_dark").addEventListener("click", () => {
+    const currentTheme = localStorage.getItem("themeMode");
+    if (currentTheme === "darkMode") {
+      localStorage.removeItem("themeMode");
+      darkButton.textContent = "Dark";
+    } else {
+      localStorage.setItem("themeMode", "darkMode");
+      darkButton.textContent = "Light";
+    }
+    changeMode();
+  });
+
   updateTemplateName(levelSelect.value, templateName);
+  changeMode();
+}
+
+function changeMode() {
+  const currentTheme = localStorage.getItem("themeMode");
+  const cells = document.querySelectorAll(".fieldLeft, .fieldLeftDark");
+  const cellsTh = document.querySelectorAll("th");
+  try {
+    if (currentTheme === "darkMode") {
+      document.body.classList.add("darkMode");
+      cellsTh.forEach((cell) => {
+        cell.classList.add("tips");
+      });
+      cells.forEach((cell) => {
+        cell.classList.remove("tips");
+        cell.classList.remove("fieldLeft");
+        cell.classList.add("fieldLeftDark");
+      });
+    } else {
+      document.body.classList.remove("darkMode");
+      cellsTh.forEach((cell) => {
+        cell.classList.remove("tips");
+      });
+      cells.forEach((cell) => {
+        cell.classList.remove("fieldLeftDark");
+        cell.classList.add("fieldLeft");
+      });
+    }
+  } catch (err) {}
 }
 
 function saveTemplate() {
@@ -261,6 +307,7 @@ function restoreGame() {
   );
 
   openTemplate(selectedTemplateNameStorage);
+
   const savedGameField = JSON.parse(localStorage.getItem("savedGameField"));
   if (!savedGameField || savedGameField.length === 0) {
     console.log("No saved game found");
@@ -461,3 +508,4 @@ function cleanCells() {
 }
 
 drawPage();
+changeMode();
