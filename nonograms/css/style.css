@@ -10,6 +10,7 @@ body {
   font-style: normal;
   font-weight: 600;
   line-height: 150%;
+  color: white;
 }
 
 .no-scroll {
@@ -28,7 +29,7 @@ body {
 }
 
 .gameArea {
-  width: 50%;
+  width: 90%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -50,7 +51,7 @@ table {
   margin: 0;
   padding: 0;
   border: 3px solid black;
-  color: white;
+  /* color: white; */
 }
 
 /* .nonogramTable {
@@ -58,13 +59,14 @@ table {
 } */
 
 .fieldLeft {
-  background-color: rgb(180, 178, 178);
-  border: 1px solid rgb(180, 178, 178);
+  background-color: rgb(111, 110, 110);
+  border: 1px solid rgb(111, 110, 110);
 }
 
 .fieldLeftDark {
-  background-color: rgb(111, 110, 110);
-  border: 1px solid rgb(111, 110, 110);
+  
+  background-color: rgb(180, 178, 178);
+  border: 1px solid rgb(180, 178, 178);
 }
 
 td,
@@ -125,7 +127,7 @@ th {
   border: 1px solid #000;
 }
 
-.bnt_clean {
+.button {
   display: inline-flex;
   border-radius: 6px;
   border: 1px solid black;
@@ -133,77 +135,15 @@ th {
   background: rgb(57, 55, 55);
   justify-content: center;
   align-items: center;
-  color: white;
   cursor: pointer;
+  color: white;
 }
 
-.bnt_clean:hover {
+.button:hover {
   background: rgb(118, 114, 114);
 }
 
-.bnt_open {
-  display: inline-flex;
-  border-radius: 6px;
-  border: 1px solid black;
-  padding: 5px 10px;
-  background: rgb(57, 55, 55);
-  justify-content: center;
-  align-items: center;
-  color: white;
-  cursor: pointer;
-}
 
-.bnt_open:hover {
-  background: rgb(118, 114, 114);
-}
-
-.bnt_save {
-  display: inline-flex;
-  border-radius: 6px;
-  border: 1px solid black;
-  padding: 5px 10px;
-  background: rgb(57, 55, 55);
-  justify-content: center;
-  align-items: center;
-  color: white;
-  cursor: pointer;
-}
-
-.bnt_save:hover {
-  background: rgb(118, 114, 114);
-}
-
-.bnt_сontinue {
-  display: inline-flex;
-  border-radius: 6px;
-  border: 1px solid black;
-  padding: 5px 10px;
-  background: rgb(57, 55, 55);
-  justify-content: center;
-  align-items: center;
-  color: white;
-  cursor: pointer;
-}
-
-.bnt_сontinue:hover {
-  background: rgb(118, 114, 114);
-}
-
-.bnt_dark {
-  display: inline-flex;
-  border-radius: 6px;
-  border: 1px solid black;
-  padding: 5px 10px;
-  background: rgb(57, 55, 55);
-  justify-content: center;
-  align-items: center;
-  color: white;
-  cursor: pointer;
-}
-
-.bnt_dark:hover {
-  background: rgb(118, 114, 114);
-}
 
 /* ---------- pop_up  */
 
@@ -285,10 +225,85 @@ th {
   color: white;
 }
 
-.darkMode .blackField {
+.blackFieldDark {
   background-color: white;
 }
 
 .darkMode .gameField {
-  background-color: black;
+  background-color: rgb(43, 42, 42);
 }
+
+
+/* ------- BNT  */
+
+/* .bnt_clean {
+  
+}
+
+.button:hover {
+  background: rgb(118, 114, 114);
+}
+
+.bnt_open {
+  display: inline-flex;
+  border-radius: 6px;
+  border: 1px solid black;
+  padding: 5px 10px;
+  background: rgb(57, 55, 55);
+  justify-content: center;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+}
+
+.bnt_open:hover {
+  background: rgb(118, 114, 114);
+}
+
+.bnt_save {
+  display: inline-flex;
+  border-radius: 6px;
+  border: 1px solid black;
+  padding: 5px 10px;
+  background: rgb(57, 55, 55);
+  justify-content: center;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+}
+
+.bnt_save:hover {
+  background: rgb(118, 114, 114);
+}
+
+.bnt_сontinue {
+  display: inline-flex;
+  border-radius: 6px;
+  border: 1px solid black;
+  padding: 5px 10px;
+  background: rgb(57, 55, 55);
+  justify-content: center;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+}
+
+.bnt_сontinue:hover {
+  background: rgb(118, 114, 114);
+}
+
+.bnt_dark {
+  display: inline-flex;
+  border-radius: 6px;
+  border: 1px solid black;
+  padding: 5px 10px;
+  background: rgb(57, 55, 55);
+  justify-content: center;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+}
+
+.bnt_dark:hover {
+  background: rgb(118, 114, 114);
+} */
