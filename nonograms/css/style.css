@@ -10,7 +10,7 @@ body {
   font-style: normal;
   font-weight: 600;
   line-height: 150%;
-  color: white;
+  color: black;
 }
 
 .no-scroll {
@@ -63,12 +63,6 @@ table {
   border: 1px solid rgb(111, 110, 110);
 }
 
-.fieldLeftDark {
-  
-  background-color: rgb(180, 178, 178);
-  border: 1px solid rgb(180, 178, 178);
-}
-
 td,
 th {
   border: 1px solid black;
@@ -81,15 +75,7 @@ th {
 
 th {
   background-color: grey;
-}
-
-.fieldLeftDark {
-  background-color: rgb(111, 110, 110);
-  border: 1px solid rgb(111, 110, 110);
-}
-
-.tips {
-  background-color: rgb(179, 178, 178);
+  user-select: none;
 }
 
 .number {
@@ -110,8 +96,8 @@ th {
   background-size: contain;
 }
 
-.crossedTip {
-  background: white url("../assets/img/cross.png") no-repeat center center;
+.darkMode .crossedField {
+  background: white url("../assets/img/cross_white.png") no-repeat center center;
   background-size: contain;
 }
 
@@ -132,18 +118,18 @@ th {
   border-radius: 6px;
   border: 1px solid black;
   padding: 5px 10px;
-  background: rgb(57, 55, 55);
+  background: rgb(226, 221, 221);
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  color: white;
+  color: black;
 }
 
-.button:hover {
-  background: rgb(118, 114, 114);
+@media (hover: hover) {
+  .button:hover {
+    background: rgb(118, 114, 114);
+  }
 }
-
-
 
 /* ---------- pop_up  */
 
@@ -211,28 +197,54 @@ th {
 
 /* --------Dark Mode------------ */
 
-.darkMode .button {
+/* .darkMode body {
   background-color: rgb(118, 114, 114);
   color: black;
-}
+} */
 
-.darkMode .number .gameField {
+.darkMode .button {
   background-color: rgb(118, 114, 114);
-}
-
-.darkMode {
-  background-color: rgb(68, 68, 67);
   color: white;
 }
 
-.blackFieldDark {
-  background-color: white;
+@media (hover: hover) {
+  .darkMode .button:hover {
+    background: rgb(176, 175, 175);
+  }
 }
 
 .darkMode .gameField {
-  background-color: rgb(43, 42, 42);
+  background-color: rgb(47, 46, 46);
 }
 
+/* .darkMode .number .gameField {
+  background-color: rgb(118, 114, 114);
+} */
+
+.darkMode {
+  background-color: rgb(50, 50, 49);
+  color: white;
+}
+
+.darkMode .blackFieldDark {
+  background-color: white;
+}
+
+.fieldLeftDark {
+  background-color: rgb(146, 146, 146);
+  border: 1px solid rgb(146, 146, 146);
+}
+
+.tips {
+  background-color: rgb(179, 178, 178);
+  color: white;
+}
+
+.darkMode .select_template,
+.darkMode .select_level {
+  background-color: rgb(195, 192, 189);
+  color: white;
+}
 
 /* ------- BNT  */
 
