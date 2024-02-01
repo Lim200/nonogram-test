@@ -1,22 +1,22 @@
 import { nonogramDataObj, nonogramGameFieldObj } from "./layout.js";
 
 const nameTemplates = [
-  "solved",
+  // "solved",
   "grid",
-  // "person",
-  // "rocket",
-  // "letterN",
-  // "face",
-  // "2",
-  // "2",
-  // "2",
-  // "2",
-  // "2",
-  // "3",
-  // "3",
-  // "3",
-  // "3",
-  // "3",
+  "person",
+  "rocket",
+  "letterN",
+  "face",
+  "snowman",
+  "turnip",
+  "cat",
+  "kettle",
+  "cat_fence",
+  "3",
+  "3",
+  "3",
+  "3",
+  "3",
 ];
 const levelNames = ["small", "medium", "large"];
 // let randomIndexPrev = null;
@@ -248,6 +248,7 @@ function drawPage() {
 
   document.querySelector(".modal_window__bnt").addEventListener("click", () => {
     drawPage();
+
     document.querySelector(".pop_up_modal").classList.add("modal_active");
     cleanTimer();
   });
@@ -331,6 +332,7 @@ function changeMode() {
 function showSolution() {
   const tableRows = document.querySelectorAll(".wrapper table tr");
   const firstGameFieldRow = nonogramData.length - nonogramGameField.length;
+
   const firstGameFieldCol =
     nonogramData[0].length - nonogramGameField[0].length;
 
@@ -340,9 +342,10 @@ function showSolution() {
     rowIndex++
   ) {
     const cells = tableRows[rowIndex].querySelectorAll("td.gameField");
+
     for (
       let colIndex = firstGameFieldCol;
-      colIndex < cells.length;
+      colIndex < cells.length + firstGameFieldCol;
       colIndex++
     ) {
       const cell = cells[colIndex - firstGameFieldCol];
@@ -466,24 +469,26 @@ function openTemplate(templateName) {
   nonogramGameField = nonogramGameFieldObj[selectedTemplateName];
 }
 
-function updateTemplateName(selectedLevel, templateName) {
-  const arrTemplates =
-    selectedLevel === "small"
-      ? nameTemplates.slice(0, 5)
-      : selectedLevel === "medium"
-      ? nameTemplates.slice(6, 11)
-      : nameTemplates.slice(11);
+function updateTemplateName(selectedLevel) {
+  let arrTemplates;
+  const templateNameContainer = document.querySelector(".select_template");
 
-  while (templateName.firstChild) {
-    templateName.removeChild(templateName.firstChild);
+  if (selectedLevel === "small") {
+    arrTemplates = nameTemplates.slice(0, 5);
+  } else if (selectedLevel === "medium") {
+    arrTemplates = nameTemplates.slice(5, 10);
+  } else if (selectedLevel === "large") {
+    arrTemplates = nameTemplates.slice(10);
   }
+
+  templateNameContainer.innerHTML = "";
 
   arrTemplates.forEach((templateValue) => {
     const option = document.createElement("option");
     option.value = templateValue;
     option.textContent =
       templateValue.charAt(0).toUpperCase() + templateValue.slice(1);
-    templateName.appendChild(option);
+    templateNameContainer.appendChild(option);
   });
 }
 
