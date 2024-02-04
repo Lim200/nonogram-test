@@ -19,30 +19,42 @@ body {
 
 .wrapper {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  /* flex-direction: column; */
+  justify-content: center;
   align-items: center;
-  width: 80vw;
-  height: 480px;
+  width: 95vw;
+  height: 95vh;
+  /* height: 480px; */
   margin: 5px;
-  border: 1px solid #000;
+  /* border: 1px solid #000; */
 }
 
 .gameArea {
-  width: 90%;
-  height: 100%;
+  /* width: 80%;
+  height: 100%; */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-left: 5px;
-  margin-right: 15px;
+  margin: 5px;
+  margin-right: 20px;
+}
+
+.controlArea {
+  display: flex;
+  flex-direction: column;
+  /* width: 19%;
+  height: 90%; */
+  justify-content: center;
+  align-items: center;
+  padding-top: 5px;
+  gap: 8px;
+  /* border: 1px solid #000; */
 }
 
 .timeArea {
   display: flex;
-  /* flex-direction: column; */
-  /* padding-top: 5px; */
+  font-size: 16px;
   gap: 8px;
 }
 
@@ -53,6 +65,9 @@ table {
   border: 3px solid black;
   /* color: white; */
 }
+
+
+
 
 /* .nonogramTable {
   border: 3px solid black;
@@ -66,11 +81,12 @@ table {
 td,
 th {
   border: 1px solid black;
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
   text-align: center;
   vertical-align: middle;
   font-size: 16px;
+  padding: 8px;
 }
 
 th {
@@ -101,17 +117,7 @@ th {
   background-size: contain;
 }
 
-.controlArea {
-  display: flex;
-  flex-direction: column;
-  width: 68%;
-  height: 90%;
-  justify-content: center;
-  align-items: center;
-  padding-top: 5px;
-  gap: 8px;
-  border: 1px solid #000;
-}
+
 
 .button {
   display: inline-flex;
@@ -130,6 +136,95 @@ th {
     background: rgb(118, 114, 114);
   }
 }
+
+.row {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  gap: 8px;
+  margin: 5px;
+}
+
+
+@media screen and (max-width: 990px)  {
+  
+  body {
+    font-size: 12px;
+  }
+
+  .wrapper {
+    flex-direction: column;
+    height: 90vh;
+  }
+
+  .gameArea {
+    width: 100%;
+    margin: 0;
+  }
+
+  .controlArea {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start; 
+    width: 100%;
+  }
+
+  .row {
+    display: flex;
+    /* flex-wrap: wrap; */
+    flex-direction: row;
+    justify-content: center;
+    gap: 5px; 
+    font-size: 12px;
+  }
+
+
+  td,
+  th {
+    width: 15px;
+    height: 15px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 12px;
+  }
+
+  .button {
+   font-size: 14px;
+  }
+
+  .level, .template {
+    font-size: 14px;
+  }
+
+}
+
+@media screen and (max-width: 670px)  { 
+  
+  td,
+  th {
+    width: 10px;
+    height: 10px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+
+}
+
+@media screen and (max-width: 480px)  { 
+  
+  td,
+  th {
+    width: 7px;
+    height: 7px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 9px;
+  }
+
+}
+
 
 /* ---------- pop_up  */
 
@@ -179,28 +274,28 @@ th {
   color: rgb(60, 2, 2);
 }
 
-.modal_window__bnt {
-  display: inline-flex;
-  border-radius: 6px;
-  border: 1px solid black;
-  padding: 5px 10px;
-  background: rgb(57, 55, 55);
-  color: white;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
+
+/* ----------------- popUpModalResult ------------------ */
+
+
+  .tableResult {
+  border-collapse: collapse; 
+  width: 90%; 
+  margin-left: 5px;
+  margin-bottom: 10px;
 }
 
-.modal_window__bnt:hover {
-  background: rgb(118, 114, 114);
-}
+
+/* .tableResult th, td {
+  padding: 8px; 
+} */
+
+
+
 
 /* --------Dark Mode------------ */
 
-/* .darkMode body {
-  background-color: rgb(118, 114, 114);
-  color: black;
-} */
+
 
 .darkMode .button {
   background-color: rgb(118, 114, 114);
@@ -214,12 +309,9 @@ th {
 }
 
 .darkMode .gameField {
-  background-color: rgb(47, 46, 46);
+  background-color: rgb(24, 24, 24);
 }
 
-/* .darkMode .number .gameField {
-  background-color: rgb(118, 114, 114);
-} */
 
 .darkMode {
   background-color: rgb(50, 50, 49);
@@ -246,76 +338,13 @@ th {
   color: white;
 }
 
-/* ------- BNT  */
-
-/* .bnt_clean {
-  
+.darkMode .modal_window {
+  background-color: rgb(50, 50, 49);
 }
 
-.button:hover {
-  background: rgb(118, 114, 114);
+.darkMode .pop_up_modal {
+  background: rgba(122, 120, 117, 0.8);
 }
 
-.bnt_open {
-  display: inline-flex;
-  border-radius: 6px;
-  border: 1px solid black;
-  padding: 5px 10px;
-  background: rgb(57, 55, 55);
-  justify-content: center;
-  align-items: center;
-  color: white;
-  cursor: pointer;
-}
 
-.bnt_open:hover {
-  background: rgb(118, 114, 114);
-}
 
-.bnt_save {
-  display: inline-flex;
-  border-radius: 6px;
-  border: 1px solid black;
-  padding: 5px 10px;
-  background: rgb(57, 55, 55);
-  justify-content: center;
-  align-items: center;
-  color: white;
-  cursor: pointer;
-}
-
-.bnt_save:hover {
-  background: rgb(118, 114, 114);
-}
-
-.bnt_сontinue {
-  display: inline-flex;
-  border-radius: 6px;
-  border: 1px solid black;
-  padding: 5px 10px;
-  background: rgb(57, 55, 55);
-  justify-content: center;
-  align-items: center;
-  color: white;
-  cursor: pointer;
-}
-
-.bnt_сontinue:hover {
-  background: rgb(118, 114, 114);
-}
-
-.bnt_dark {
-  display: inline-flex;
-  border-radius: 6px;
-  border: 1px solid black;
-  padding: 5px 10px;
-  background: rgb(57, 55, 55);
-  justify-content: center;
-  align-items: center;
-  color: white;
-  cursor: pointer;
-}
-
-.bnt_dark:hover {
-  background: rgb(118, 114, 114);
-} */

@@ -1,24 +1,24 @@
-import { nonogramDataObj, nonogramGameFieldObj } from "./templates.js";
+import { nonogramDataObj, nonogramGameFieldObj } from './templates.js';
 
 const nameTemplates = [
-  "solved",
-  "grid",
-  "person",
-  "rocket",
-  "letterN",
-  "face",
-  "snowman",
-  "turnip",
-  "cat",
-  "kettle",
-  "cat_fence",
-  "lion",
-  "coffee",
-  "cow",
-  "elk",
-  "Mickey",
+  'solved',
+  'grid',
+  'person',
+  'rocket',
+  'letterN',
+  'face',
+  'snowman',
+  'turnip',
+  'cat',
+  'kettle',
+  'cat_fence',
+  'lion',
+  'coffee',
+  'cow',
+  'elk',
+  'Mickey',
 ];
-const levelNames = ["small", "medium", "large"];
+const levelNames = ['small', 'medium', 'large'];
 // let randomIndexPrev = null;
 
 function generateTemplates(sumItem) {
@@ -39,7 +39,7 @@ function generateTemplates(sumItem) {
 //   return nameTemplates[randomIndex];
 // }
 
-let templatesRandom = generateTemplates(2);
+let templatesRandom = generateTemplates(5);
 let templateName;
 let gameArea;
 let timeSpan;
@@ -52,17 +52,20 @@ let modalText;
 let nonogramData = nonogramDataObj[templatesRandom];
 let nonogramGameField = nonogramGameFieldObj[templatesRandom];
 let levelSelect;
+let tableResult;
+let timeArea;
+let isSoundEnabled = true;
 
 let cell;
 
 function createNonogramTable(data, gameField) {
-  const table = document.createElement("table");
+  const table = document.createElement('table');
 
   const firstGameFieldRow = data.length - gameField.length;
   const firstGameFieldCol = data[0].length - gameField[0].length;
 
   for (let row = 0; row < data.length; row++) {
-    const tr = document.createElement("tr");
+    const tr = document.createElement('tr');
     for (let col = 0; col < data[row].length; col++) {
       // console.log(
       //   "data[row][col]",
@@ -71,36 +74,51 @@ function createNonogramTable(data, gameField) {
       //   typeof +data[row][col]
       // );
       let elemTable = data[row][col];
-      let cellType = elemTable === "" || !isNaN(elemTable) ? "th" : "td";
+      let cellType = elemTable === '' || !isNaN(elemTable) ? 'th' : 'td';
       cell = document.createElement(cellType);
       cell.textContent = data[row][col];
 
-      if (cell.textContent === "a" || cell.textContent === "x") {
-        cell.textContent = "";
-        cell.className = "gameField";
-      } else if (cell.textContent === "") {
-        cell.className = "fieldLeft";
+      if (cell.textContent === 'a' || cell.textContent === 'x') {
+        cell.textContent = '';
+        cell.className = 'gameField';
+      } else if (cell.textContent === '') {
+        cell.className = 'fieldLeft';
       }
 
       if (col === firstGameFieldCol - 1) {
-        cell.style.borderRight = "3px solid black";
+        cell.style.borderRight = '3px solid black';
       }
       if (row === firstGameFieldRow - 1) {
-        cell.style.borderBottom = "3px solid black";
+        cell.style.borderBottom = '3px solid black';
       }
 
-      if (cell.classList.contains("gameField")) {
+      if (cell.classList.contains('gameField')) {
         if ((row - firstGameFieldRow) % 5 === 0) {
-          cell.style.borderTop = "3px solid black";
+          cell.style.borderTop = '3px solid black';
         }
         if ((col - firstGameFieldCol) % 5 === 0) {
-          cell.style.borderLeft = "3px solid black";
+          cell.style.borderLeft = '3px solid black';
         }
       }
 
-      if (cell.classList.contains("gameField")) {
-        cell.addEventListener("click", leftClick);
-        cell.addEventListener("contextmenu", rightClick);
+      if (cell.classList.contains('gameField')) {
+        cell.addEventListener('click', leftClick);
+        cell.addEventListener('contextmenu', rightClick);
+      }
+
+      if (cellType === 'th') {
+        if (
+          col >= firstGameFieldCol &&
+          (col - firstGameFieldCol + 1) % 5 === 0
+        ) {
+          cell.style.borderRight = '3px solid black';
+        }
+        if (
+          row >= firstGameFieldRow &&
+          (row - firstGameFieldRow + 1) % 5 === 0
+        ) {
+          cell.style.borderBottom = '3px solid black';
+        }
       }
 
       tr.appendChild(cell);
@@ -112,219 +130,299 @@ function createNonogramTable(data, gameField) {
 }
 
 function drawPage() {
-  const popUpModal = document.createElement("div");
-  popUpModal.className = "pop_up_modal modal_active";
+  const popUpModal = document.createElement('div');
+  popUpModal.className = 'pop_up_modal modal_active';
 
-  const modalWindow = document.createElement("div");
-  modalWindow.className = "modal_window";
+  const modalWindow = document.createElement('div');
+  modalWindow.className = 'modal_window';
 
-  modalText = document.createElement("h3");
+  modalText = document.createElement('h3');
   // modalText.className = "modal_window__text";
   // modalText.textContent = "Great! You have solved the nonogram in  seconds!";
 
-  timeSpan = document.createElement("span");
-  timeSpan.className = "modal_window__time";
-  timeSpan.textContent = "00:00";
+  timeSpan = document.createElement('span');
+  timeSpan.className = 'modal_window__time';
+  timeSpan.textContent = '00:00';
 
   modalText.innerHTML = `Great! You have solved the nonogram in <span class="modal_window__time">${timeSpan.textContent}</span> seconds!`;
 
-  const playAgainButton = document.createElement("button");
-  playAgainButton.className = "modal_window__bnt";
-  playAgainButton.textContent = "Ok";
+  const playAgainButton = document.createElement('button');
+  playAgainButton.className = 'modal_window__bnt button';
+  playAgainButton.textContent = 'Close';
+
+  const popUpModalResult = document.createElement('div');
+  popUpModalResult.className = 'pop-up_result pop_up_modal modal_active';
+
+  const modalWrapper = document.createElement('div');
+  // modalWrapper.className = 'modalWrapper';
+  modalWrapper.className = 'modal_window';
+
+  const modalTextResult = document.createElement('h3');
+  modalTextResult.className = 'modal-title';
+  modalTextResult.textContent = 'Five bests results';
+
+  tableResult = document.createElement('table');
+  tableResult.className = 'tableResult';
+  tableResult.textContent = '';
+
+  const closeButton = document.createElement('button');
+  closeButton.className = 'close_btn button';
+  closeButton.textContent = 'Close';
 
   modalText.appendChild(timeSpan);
   modalWindow.appendChild(modalText);
   modalWindow.appendChild(playAgainButton);
   popUpModal.appendChild(modalWindow);
 
-  const wrapper = document.createElement("section");
-  wrapper.className = "wrapper";
+  modalWrapper.appendChild(modalTextResult);
+  modalWrapper.appendChild(tableResult);
+  modalWrapper.appendChild(closeButton);
+  popUpModalResult.appendChild(modalWrapper);
 
-  const timeArea = document.createElement("div");
-  timeArea.className = "timeArea";
+  const wrapper = document.createElement('section');
+  wrapper.className = 'wrapper';
 
-  time = document.createElement("span");
-  time.className = "time";
-  time.textContent = "00:00";
+  timeArea = document.createElement('div');
+  timeArea.className = 'timeArea';
 
-  gameArea = document.createElement("div");
-  gameArea.className = "gameArea";
+  time = document.createElement('span');
+  time.className = 'time';
+  time.textContent = '00:00';
 
-  const controlArea = document.createElement("div");
-  controlArea.className = "controlArea";
+  gameArea = document.createElement('div');
+  gameArea.className = 'gameArea';
 
-  const cleanButton = document.createElement("button");
-  cleanButton.className = "bnt_clean button";
-  cleanButton.textContent = "Reset game";
+  const controlArea = document.createElement('div');
+  controlArea.className = 'controlArea';
 
-  const saveButton = document.createElement("button");
-  saveButton.className = "bnt_save button";
-  saveButton.textContent = "Save game";
+  const rowRow2 = document.createElement('div');
+  rowRow2.className = 'row row2';
 
-  const сontinueButton = document.createElement("button");
-  сontinueButton.className = "bnt_сontinue button";
-  сontinueButton.textContent = "Сontinue last game";
+  const cleanButton = document.createElement('button');
+  cleanButton.className = 'bnt_clean button';
+  cleanButton.textContent = 'Reset game';
 
-  const darkButton = document.createElement("button");
-  darkButton.className = "bnt_dark button";
-  darkButton.textContent = "Dark";
+  const saveButton = document.createElement('button');
+  saveButton.className = 'bnt_save button';
+  saveButton.textContent = 'Save game';
 
-  const randomButton = document.createElement("button");
-  randomButton.className = "bnt_random button";
-  randomButton.textContent = "Random game";
+  const сontinueButton = document.createElement('button');
+  сontinueButton.className = 'bnt_сontinue button';
+  сontinueButton.textContent = 'Сontinue last game';
 
-  const solutionButton = document.createElement("button");
-  solutionButton.className = "bnt_solution button";
-  solutionButton.textContent = "Solution";
+  const darkButton = document.createElement('button');
+  darkButton.className = 'bnt_dark button';
+  darkButton.textContent = 'Dark';
 
-  const levelLabel = document.createElement("label");
-  levelLabel.className = "level";
-  levelLabel.htmlFor = "level";
-  levelLabel.textContent = "Level:";
+  const rowRow3 = document.createElement('div');
+  rowRow3.className = 'row row3';
 
-  levelSelect = document.createElement("select");
-  levelSelect.className = "select_level";
-  levelSelect.name = "level";
-  levelSelect.id = "level";
+  const randomButton = document.createElement('button');
+  randomButton.className = 'bnt_random button';
+  randomButton.textContent = 'Random game';
+
+  const solutionButton = document.createElement('button');
+  solutionButton.className = 'bnt_solution button';
+  solutionButton.textContent = 'Solution';
+
+  const resultButton = document.createElement('button');
+  resultButton.className = 'resultButton button';
+  resultButton.textContent = 'Best results';
+
+  const soundButton = document.createElement('button');
+  soundButton.className = 'soundButton button';
+  soundButton.textContent = 'Sound off';
+
+  const rowRow1 = document.createElement('div');
+  rowRow1.className = 'row row1';
+
+  const levelLabel = document.createElement('label');
+  levelLabel.className = 'level';
+  levelLabel.htmlFor = 'level';
+  levelLabel.textContent = 'Level:';
+
+  levelSelect = document.createElement('select');
+  levelSelect.className = 'select_level';
+  levelSelect.name = 'level';
+  levelSelect.id = 'level';
 
   levelNames.forEach((optionValue) => {
-    const option = document.createElement("option");
+    const option = document.createElement('option');
     option.value = optionValue;
     option.textContent =
       optionValue.charAt(0).toUpperCase() + optionValue.slice(1);
     levelSelect.appendChild(option);
   });
 
-  const templateLabel = document.createElement("label");
-  templateLabel.className = "template";
-  templateLabel.htmlFor = "template";
-  templateLabel.textContent = "Template:";
+  const templateLabel = document.createElement('label');
+  templateLabel.className = 'template';
+  templateLabel.htmlFor = 'template';
+  templateLabel.textContent = 'Template:';
 
-  templateName = document.createElement("select");
-  templateName.className = "select_template";
-  templateName.name = "template";
-  templateName.id = "template";
+  templateName = document.createElement('select');
+  templateName.className = 'select_template';
+  templateName.name = 'template';
+  templateName.id = 'template';
 
   // levelSelect.name = "template";
   // levelSelect.id = "template";
 
-  levelSelect.addEventListener("change", (e) => {
+  levelSelect.addEventListener('change', (e) => {
     updateTemplateName(e.target.value);
   });
 
-  const openButton = document.createElement("button");
-  openButton.className = "bnt_open button";
-  openButton.textContent = "Open";
+  const openButton = document.createElement('button');
+  openButton.className = 'bnt_open button';
+  openButton.textContent = 'Open';
 
-  document.body.innerHTML = "";
+  document.body.innerHTML = '';
   document.body.appendChild(popUpModal);
+  document.body.appendChild(popUpModalResult);
   document.body.appendChild(wrapper);
-  wrapper.appendChild(timeArea);
+
   timeArea.appendChild(time);
   wrapper.appendChild(gameArea);
+  gameArea.appendChild(timeArea);
   gameArea.appendChild(createNonogramTable(nonogramData, nonogramGameField));
   wrapper.appendChild(controlArea);
-  controlArea.appendChild(cleanButton);
-  controlArea.appendChild(levelLabel);
-  controlArea.appendChild(levelSelect);
-  controlArea.appendChild(templateLabel);
-  controlArea.appendChild(templateName);
-  controlArea.appendChild(openButton);
-  controlArea.appendChild(saveButton);
-  controlArea.appendChild(сontinueButton);
-  controlArea.appendChild(darkButton);
-  controlArea.appendChild(randomButton);
-  controlArea.appendChild(solutionButton);
 
-  document.querySelector(".bnt_clean").addEventListener("click", () => {
+  controlArea.appendChild(rowRow1);
+  rowRow1.appendChild(levelLabel);
+  rowRow1.appendChild(levelSelect);
+  rowRow1.appendChild(templateLabel);
+  rowRow1.appendChild(templateName);
+  rowRow1.appendChild(openButton);
+
+  controlArea.appendChild(rowRow2);
+  rowRow2.appendChild(cleanButton);
+  rowRow2.appendChild(saveButton);
+  rowRow2.appendChild(сontinueButton);
+  rowRow2.appendChild(darkButton);
+
+  controlArea.appendChild(rowRow3);
+  rowRow3.appendChild(randomButton);
+  rowRow3.appendChild(solutionButton);
+  rowRow3.appendChild(resultButton);
+  rowRow3.appendChild(soundButton);
+
+  document.querySelector('.bnt_clean').addEventListener('click', () => {
     // body.classList.remove('no-scroll');
     cleanCells();
     cleanTimer();
   });
 
-  document.querySelector(".bnt_open").addEventListener("click", () => {
+  document.querySelector('.bnt_open').addEventListener('click', () => {
     openTemplate(templateName.value);
     cleanTimer();
   });
 
-  document.querySelector(".modal_window__bnt").addEventListener("click", () => {
+  document.querySelector('.modal_window__bnt').addEventListener('click', () => {
     drawPage();
 
-    document.querySelector(".pop_up_modal").classList.add("modal_active");
-
+    document.querySelector('.pop_up_modal').classList.add('modal_active');
+    document.body.classList.remove('no-scroll');
     cleanTimer();
   });
 
-  document.querySelector(".bnt_save").addEventListener("click", () => {
+  document.querySelector('.close_btn').addEventListener('click', () => {
+    document.querySelector('.pop-up_result').classList.add('modal_active');
+    document.body.classList.remove('no-scroll');
+  });
+
+  document.querySelector('.resultButton').addEventListener('click', () => {
+    document.querySelector('.pop-up_result').classList.remove('modal_active');
+    showRecordResult();
+  });
+
+  document.querySelector('.bnt_save').addEventListener('click', () => {
     saveTemplate();
   });
 
-  document.querySelector(".bnt_сontinue").addEventListener("click", () => {
+  document.querySelector('.bnt_сontinue').addEventListener('click', () => {
     restoreGame();
     changeMode();
+    cleanTimer();
   });
 
-  document.querySelector(".bnt_dark").addEventListener("click", () => {
-    const currentTheme = localStorage.getItem("themeMode");
-    if (currentTheme === "darkMode") {
-      localStorage.removeItem("themeMode");
-      darkButton.textContent = "Dark";
+  document.querySelector('.bnt_dark').addEventListener('click', () => {
+    const currentTheme = localStorage.getItem('themeMode');
+    if (currentTheme === 'darkMode') {
+      localStorage.removeItem('themeMode');
+      darkButton.textContent = 'Dark';
     } else {
-      localStorage.setItem("themeMode", "darkMode");
-      darkButton.textContent = "Light";
+      localStorage.setItem('themeMode', 'darkMode');
+      darkButton.textContent = 'Light';
     }
     changeMode();
   });
 
-  document.querySelector(".bnt_random").addEventListener("click", () => {
+  document.querySelector('.bnt_random').addEventListener('click', () => {
     openTemplate(generateTemplates(15));
     cleanTimer();
   });
 
-  document.querySelector(".bnt_solution").addEventListener("click", () => {
+  document.querySelector('.bnt_solution').addEventListener('click', () => {
     showSolution();
     // changeMode();
+  });
+
+  document.querySelector('.soundButton').addEventListener('click', () => {
+    toggleSound();
   });
 
   updateTemplateName(levelSelect.value, templateName);
   changeMode();
 }
 
+function toggleSound() {
+  isSoundEnabled = !isSoundEnabled;
+  document.querySelector('.soundButton').textContent = isSoundEnabled
+    ? 'Sound off'
+    : 'Sound on';
+}
+
+function playSound(audioFile) {
+  if (!isSoundEnabled) return;
+
+  const audio = new Audio(audioFile);
+  audio.play();
+}
+
 function changeMode() {
-  const currentTheme = localStorage.getItem("themeMode");
-  const cells = document.querySelectorAll(".fieldLeft, .fieldLeftDark");
-  const cellsTh = document.querySelectorAll("th");
-  const cellsActive = document.querySelectorAll(".gameField");
+  const currentTheme = localStorage.getItem('themeMode');
+  const cells = document.querySelectorAll('.fieldLeft, .fieldLeftDark');
+  const cellsTh = document.querySelectorAll('th');
+  const cellsActive = document.querySelectorAll('.gameField');
   try {
-    if (currentTheme === "darkMode") {
-      document.body.classList.add("darkMode");
+    if (currentTheme === 'darkMode') {
+      document.body.classList.add('darkMode');
       cellsActive.forEach((cell) => {
-        if (cell.classList.contains("blackField")) {
-          cell.classList.remove("blackField");
-          cell.classList.add("blackFieldDark");
+        if (cell.classList.contains('blackField')) {
+          cell.classList.remove('blackField');
+          cell.classList.add('blackFieldDark');
         }
       });
       cellsTh.forEach((cell) => {
-        cell.classList.add("tips");
+        cell.classList.add('tips');
       });
       cells.forEach((cell) => {
-        cell.classList.remove("tips");
-        cell.classList.remove("fieldLeft");
-        cell.classList.add("fieldLeftDark");
+        cell.classList.remove('tips');
+        cell.classList.remove('fieldLeft');
+        cell.classList.add('fieldLeftDark');
       });
     } else {
-      document.body.classList.remove("darkMode");
+      document.body.classList.remove('darkMode');
       cellsTh.forEach((cell) => {
-        cell.classList.remove("tips");
+        cell.classList.remove('tips');
       });
       cells.forEach((cell) => {
-        cell.classList.remove("fieldLeftDark");
-        cell.classList.add("fieldLeft");
+        cell.classList.remove('fieldLeftDark');
+        cell.classList.add('fieldLeft');
       });
       cellsActive.forEach((cell) => {
-        if (cell.classList.contains("blackFieldDark")) {
-          cell.classList.remove("blackFieldDark");
-          cell.classList.add("blackField");
+        if (cell.classList.contains('blackFieldDark')) {
+          cell.classList.remove('blackFieldDark');
+          cell.classList.add('blackField');
         }
       });
     }
@@ -332,7 +430,7 @@ function changeMode() {
 }
 
 function showSolution() {
-  const tableRows = document.querySelectorAll(".wrapper table tr");
+  const tableRows = document.querySelectorAll('.wrapper table tr');
   const firstGameFieldRow = nonogramData.length - nonogramGameField.length;
 
   const firstGameFieldCol =
@@ -343,7 +441,7 @@ function showSolution() {
     rowIndex < tableRows.length;
     rowIndex++
   ) {
-    const cells = tableRows[rowIndex].querySelectorAll("td.gameField");
+    const cells = tableRows[rowIndex].querySelectorAll('td.gameField');
 
     for (
       let colIndex = firstGameFieldCol;
@@ -355,13 +453,13 @@ function showSolution() {
         nonogramGameField[rowIndex - firstGameFieldRow][
           colIndex - firstGameFieldCol
         ];
-      cell.classList.remove("blackField", "blackFieldDark", "crossedField");
+      cell.classList.remove('blackField', 'blackFieldDark', 'crossedField');
 
-      if (solutionValue === "a") {
+      if (solutionValue === 'a') {
         const activeClass =
-          localStorage.getItem("themeMode") === "darkMode"
-            ? "blackFieldDark"
-            : "blackField";
+          localStorage.getItem('themeMode') === 'darkMode'
+            ? 'blackFieldDark'
+            : 'blackField';
         cell.classList.add(activeClass);
       }
     }
@@ -370,64 +468,64 @@ function showSolution() {
 
 function saveTemplate() {
   const selectedTemplateName = templateName.value;
-  localStorage.setItem("selectedTemplateName", selectedTemplateName);
-  const tableRows = document.querySelectorAll(".wrapper table tr");
+  localStorage.setItem('selectedTemplateName', selectedTemplateName);
+  const tableRows = document.querySelectorAll('.wrapper table tr');
   let savedGameField = [];
 
   for (let rowIndex = 0; rowIndex < tableRows.length; rowIndex++) {
-    const cells = tableRows[rowIndex].querySelectorAll("td, th");
+    const cells = tableRows[rowIndex].querySelectorAll('td, th');
     let rowCurrentGameField = [];
 
     for (let cellIndex = 0; cellIndex < cells.length; cellIndex++) {
       const cell = cells[cellIndex];
       if (
-        cell.classList.contains("blackField") ||
-        cell.classList.contains("blackFieldDark")
+        cell.classList.contains('blackField') ||
+        cell.classList.contains('blackFieldDark')
       ) {
-        rowCurrentGameField.push("black");
-      } else if (cell.classList.contains("crossedField")) {
-        rowCurrentGameField.push("crossed");
+        rowCurrentGameField.push('black');
+      } else if (cell.classList.contains('crossedField')) {
+        rowCurrentGameField.push('crossed');
       } else {
-        rowCurrentGameField.push("empty");
+        rowCurrentGameField.push('empty');
       }
     }
     savedGameField.push(rowCurrentGameField);
   }
 
-  localStorage.setItem("savedGameField", JSON.stringify(savedGameField));
-  console.log("Game saved");
+  localStorage.setItem('savedGameField', JSON.stringify(savedGameField));
+  console.log('Game saved');
 }
 
 function restoreGame() {
   const selectedTemplateNameStorage = localStorage.getItem(
-    "selectedTemplateName"
+    'selectedTemplateName'
   );
 
   openTemplate(selectedTemplateNameStorage);
 
-  const savedGameField = JSON.parse(localStorage.getItem("savedGameField"));
+  const savedGameField = JSON.parse(localStorage.getItem('savedGameField'));
   if (!savedGameField || savedGameField.length === 0) {
-    console.log("No saved game found");
+    console.log('No saved game found');
     return;
   }
 
-  const tableRows = document.querySelectorAll(".wrapper table tr");
+  const tableRows = document.querySelectorAll('.wrapper table tr');
 
   savedGameField.forEach((row, rowIndex) => {
-    const cells = tableRows[rowIndex].querySelectorAll("td, th");
+    const cells = tableRows[rowIndex].querySelectorAll('td, th');
     row.forEach((cellState, cellIndex) => {
       const cell = cells[cellIndex];
-      if (cellState === "black") {
-        cell.classList.add("blackField");
-      } else if (cellState === "crossed") {
-        cell.classList.add("crossedField");
+      if (cellState === 'black') {
+        cell.classList.add('blackField');
+      } else if (cellState === 'crossed') {
+        cell.classList.add('crossedField');
       } else {
-        cell.classList.remove("blackField", "crossedField");
+        cell.classList.remove('blackField', 'crossedField');
       }
     });
   });
 
-  console.log("Game restored");
+  console.log('Game restored');
 }
 
 function startTimer() {
@@ -464,7 +562,8 @@ function openTemplate(templateName) {
     nonogramGameFieldObj[selectedTemplateName]
   );
 
-  gameArea.innerHTML = "";
+  gameArea.innerHTML = '';
+  gameArea.appendChild(timeArea);
   gameArea.appendChild(newTable);
 
   nonogramData = nonogramDataObj[selectedTemplateName];
@@ -473,20 +572,20 @@ function openTemplate(templateName) {
 
 function updateTemplateName(selectedLevel) {
   let arrTemplates;
-  const templateNameContainer = document.querySelector(".select_template");
+  const templateNameContainer = document.querySelector('.select_template');
 
-  if (selectedLevel === "small") {
+  if (selectedLevel === 'small') {
     arrTemplates = nameTemplates.slice(0, 5);
-  } else if (selectedLevel === "medium") {
+  } else if (selectedLevel === 'medium') {
     arrTemplates = nameTemplates.slice(5, 10);
-  } else if (selectedLevel === "large") {
+  } else if (selectedLevel === 'large') {
     arrTemplates = nameTemplates.slice(10);
   }
 
-  templateNameContainer.innerHTML = "";
+  templateNameContainer.innerHTML = '';
 
   arrTemplates.forEach((templateValue) => {
-    const option = document.createElement("option");
+    const option = document.createElement('option');
     option.value = templateValue;
     option.textContent =
       templateValue.charAt(0).toUpperCase() + templateValue.slice(1);
@@ -494,47 +593,28 @@ function updateTemplateName(selectedLevel) {
   });
 }
 
-// function leftClick(event) {
-//   if (!this.classList.contains('blackField')) {
-//     this.classList.add('blackField');
-//     this.classList.remove('crossedField');
-//   if (!this.classList.contains("blackField")) {
-//     this.classList.add("blackField");
-//     this.classList.remove("crossedField");
-//   } else {
-//     this.classList.remove('blackField');
-//     this.classList.remove('crossedField');
-//     this.classList.remove("blackField");
-//     this.classList.remove("crossedField");
-//   }
-//   checkFill();
-//   clearInterval(interval);
-//   interval = setInterval(startTimer, 10);
-//   // clearInterval(interval);
-//   // interval = setInterval(startTimer, 10);
-//   if (!interval && !isSolved) {
-//     interval = setInterval(startTimer, 10);
-//   }
-// }
-
 function leftClick(event) {
   if (
-    !this.classList.contains("blackField") &&
-    !this.classList.contains("blackFieldDark")
+    !this.classList.contains('blackField') &&
+    !this.classList.contains('blackFieldDark')
   ) {
     const activeClass =
-      localStorage.getItem("themeMode") === "darkMode"
-        ? "blackFieldDark"
-        : "blackField";
+      localStorage.getItem('themeMode') === 'darkMode'
+        ? 'blackFieldDark'
+        : 'blackField';
     this.classList.add(activeClass);
-    this.classList.remove("crossedField");
+    this.classList.remove('crossedField');
+    playSound('assets/audio/fillcell.wav');
+    // const fillCellWav = playSound('assets/audio/fillcell.wav');
+    // fillCellWav.play();
   } else {
-    this.classList.remove("blackField", "blackFieldDark");
-    this.classList.remove("crossedField");
+    this.classList.remove('blackField', 'blackFieldDark');
+    this.classList.remove('crossedField');
+    playSound('assets/audio/clean.mp3');
+    // const cleanMP3 = playSound('assets/audio/clean.mp3');
+    // cleanMP3.play();
   }
 
-  const fillCellWav = new Audio("assets/audio/fillcell.wav");
-  fillCellWav.play();
   checkFill();
 
   if (!interval && !isSolved) {
@@ -542,42 +622,21 @@ function leftClick(event) {
   }
 }
 
-// function leftClick(event) {
-//   const currentTheme = localStorage.getItem('themeMode');
-//   if (currentTheme === 'darkMode') {
-//     if (!this.classList.contains('blackFieldDark')) {
-//       this.classList.add('blackFieldDark');
-//       this.classList.remove('crossedField');
-//     } else {
-//       this.classList.remove('blackFieldDark');
-//       this.classList.remove('crossedField');
-//     }
-//   } else {
-//     if (!this.classList.contains('blackField')) {
-//       this.classList.add('blackField');
-//       this.classList.remove('crossedField');
-//     } else {
-//       this.classList.remove('blackField');
-//       this.classList.remove('crossedField');
-//     }
-//   }
-//   checkFill();
-
-//   if (!interval && !isSolved) {
-//     interval = setInterval(startTimer, 10);
-//   }
-// }
-
 function rightClick(event) {
   event.preventDefault();
-  if (!this.classList.contains("crossedField")) {
-    this.classList.add("crossedField");
-    this.classList.remove("blackField");
+  if (!this.classList.contains('crossedField')) {
+    this.classList.add('crossedField');
+    this.classList.remove('blackField', 'blackFieldDark');
+    playSound('assets/audio/cross.wav');
+    // const crossWav = playSound('assets/audio/cross.wav');
+    // crossWav.play();
   } else {
-    this.classList.remove("crossedField");
+    this.classList.remove('blackField', 'blackFieldDark', 'crossedField');
+    playSound('assets/audio/clean.mp3');
+    // const cleanMP3 = playSound('assets/audio/clean.mp3');
+    // cleanMP3.play();
   }
-  const crossWav = new Audio("assets/audio/cross.wav");
-  crossWav.play();
+
   checkFill();
   if (!interval && !isSolved) {
     interval = setInterval(startTimer, 10);
@@ -585,24 +644,24 @@ function rightClick(event) {
 }
 
 function checkFill() {
-  const tableRows = document.querySelectorAll(".wrapper table tr");
+  const tableRows = document.querySelectorAll('.wrapper table tr');
   let cellsGameField = [];
 
   for (let rowIndex = 1; rowIndex < tableRows.length; rowIndex++) {
-    const cells = tableRows[rowIndex].querySelectorAll("td");
+    const cells = tableRows[rowIndex].querySelectorAll('td');
     let rowCourantGameField = [];
 
     for (let cellIndex = 0; cellIndex < cells.length; cellIndex++) {
       const cell = cells[cellIndex];
-      const mode = localStorage.getItem("themeMode");
-      if (mode !== "darkMode") {
+      const mode = localStorage.getItem('themeMode');
+      if (mode !== 'darkMode') {
         rowCourantGameField.push(
-          cell.classList.contains("blackField") ? "a" : "x"
+          cell.classList.contains('blackField') ? 'a' : 'x'
         );
       }
-      if (mode === "darkMode") {
+      if (mode === 'darkMode') {
         rowCourantGameField.push(
-          cell.classList.contains("blackFieldDark") ? "a" : "x"
+          cell.classList.contains('blackFieldDark') ? 'a' : 'x'
         );
       }
     }
@@ -641,13 +700,16 @@ function checkFill() {
 }
 
 function solved() {
-  document.querySelector(".pop_up_modal").classList.remove("modal_active");
+  document.querySelector('.pop_up_modal').classList.remove('modal_active');
   clearInterval(interval);
-  console.log("Great! You have solved the nonogram!");
-  timeSpan.textContent = formatTime(seconds);
+  console.log('Great! You have solved the nonogram!');
+  // timeSpan.textContent = formatTime(seconds);
+  timeSpan.textContent = seconds;
   modalText.innerHTML = `Great! You have solved the nonogram in <span class="modal_window__time">${timeSpan.textContent}</span> seconds!`;
-  const winMP3 = new Audio("assets/audio/win.mp3");
-  winMP3.play();
+  document.body.classList.add('no-scroll');
+  playSound('assets/audio/win.mp3');
+  // const winMP3 = playSound('assets/audio/win.mp3');
+  // winMP3.play();
 
   // let templateName
   // levelNames
@@ -658,10 +720,19 @@ function solved() {
   const game = {
     templateName: templateName.value,
     level: levelSelect.value,
+    time: formatTime(seconds),
     seconds,
   };
 
-  localStorage.setItem("game", JSON.stringify(game));
+  let savedGames = JSON.parse(localStorage.getItem('games')) || [];
+
+  savedGames.unshift(game);
+
+  if (savedGames.length > 5) {
+    savedGames = savedGames.slice(0, 5);
+  }
+
+  localStorage.setItem('games', JSON.stringify(savedGames));
 
   if (interval) {
     clearInterval(interval);
@@ -669,18 +740,107 @@ function solved() {
   }
 }
 
+function showRecordResult() {
+  const savedGames = JSON.parse(localStorage.getItem('games')) || [];
+  let resultArr = savedGames;
+  if (savedGames.length > 0) {
+    resultArr.sort((a, b) => a.seconds - b.seconds);
+
+    tableResult.innerHTML = '';
+
+    const table = document.createElement('table');
+    const thead = document.createElement('thead');
+    const tbody = document.createElement('tbody');
+    const trHead = document.createElement('tr');
+
+    const headers = ['Place', 'Template', 'Level', 'Time'];
+    headers.forEach((headerText) => {
+      const th = document.createElement('th');
+      th.textContent = headerText;
+      trHead.appendChild(th);
+    });
+
+    thead.appendChild(trHead);
+    table.appendChild(thead);
+
+    resultArr.forEach((game, index) => {
+      const tr = document.createElement('tr');
+
+      const tdPlace = document.createElement('td');
+      tdPlace.textContent = index + 1;
+      tr.appendChild(tdPlace);
+
+      const tdTemplate = document.createElement('td');
+      tdTemplate.textContent = game.templateName;
+      tr.appendChild(tdTemplate);
+
+      const tdLevel = document.createElement('td');
+      tdLevel.textContent = game.level;
+      tr.appendChild(tdLevel);
+
+      const tdTime = document.createElement('td');
+      tdTime.textContent = game.time;
+      tr.appendChild(tdTime);
+
+      tbody.appendChild(tr);
+    });
+
+    table.appendChild(tbody);
+    tableResult.appendChild(table);
+  } else {
+    const noGamesMsg = document.createElement('p');
+    noGamesMsg.textContent = 'There are no saved games.';
+    tableResult.appendChild(noGamesMsg);
+  }
+  document.body.classList.add('no-scroll');
+
+  //     tableResult.innerHTML = `
+  // <thead>
+  //     <tr>
+  //     <th>Place</th>
+  //     <th>Template</th>
+  //     <th>Level</th>
+  //     <th>Time</th>
+  //     </tr>
+  // </thead>
+  // <tbody>
+  //     ${resultArr
+  //       .map(
+  //         (game, index) => `
+  //     <tr>
+  //         <td>${index + 1}</td>
+  //         <td>${game.templateName}</td>
+  //         <td>${game.level}</td>
+  //         <td>${game.time}</td>
+  //     </tr>
+  //     `
+  //       )
+  //       .join('')}
+  // </tbody>
+  // `;
+  //   } else {
+  //     tableResult.innerHTML = 'There are no saved games.';
+  // }
+  // table.appendChild(tableShow);
+  //   savedGames.forEach((game) => {
+  //     const row = document.createElement('div');
+  //     row.innerHTML = `Template: ${game.templateName}, Level: ${game.level}, Time: ${game.time}`;
+  //     tableResult.appendChild(row);
+  //   });
+}
+
 function cleanCells() {
-  const tableRows = document.querySelectorAll(".wrapper table tr");
+  const tableRows = document.querySelectorAll('.wrapper table tr');
 
   for (let rowIndex = 1; rowIndex < tableRows.length; rowIndex++) {
-    const cells = tableRows[rowIndex].querySelectorAll("td");
+    const cells = tableRows[rowIndex].querySelectorAll('td');
 
     for (let cellIndex = 0; cellIndex < cells.length; cellIndex++) {
       const cell = cells[cellIndex];
 
-      if (cell.classList.contains("gameField")) {
+      if (cell.classList.contains('gameField')) {
         // console.log('Clean');
-        cell.classList.remove("blackField", "blackFieldDark", "crossedField");
+        cell.classList.remove('blackField', 'blackFieldDark', 'crossedField');
       }
     }
   }
