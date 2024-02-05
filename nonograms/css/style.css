@@ -19,19 +19,14 @@ body {
 
 .wrapper {
   display: flex;
-  /* flex-direction: column; */
   justify-content: center;
   align-items: center;
   width: 95vw;
   height: 95vh;
-  /* height: 480px; */
   margin: 5px;
-  /* border: 1px solid #000; */
 }
 
 .gameArea {
-  /* width: 80%;
-  height: 100%; */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -43,13 +38,10 @@ body {
 .controlArea {
   display: flex;
   flex-direction: column;
-  /* width: 19%;
-  height: 90%; */
   justify-content: center;
   align-items: center;
   padding-top: 5px;
   gap: 8px;
-  /* border: 1px solid #000; */
 }
 
 .timeArea {
@@ -63,17 +55,17 @@ table {
   margin: 0;
   padding: 0;
   border: 3px solid black;
-  /* color: white; */
 }
-
-/* .nonogramTable {
-  border: 3px solid black;
-} */
 
 .fieldLeft {
   background-color: rgb(111, 110, 110);
   border: 1px solid rgb(111, 110, 110);
   color: rgb(111, 110, 110);
+}
+
+.fieldZero {
+  background-color: grey;
+  color: grey;
 }
 
 td,
@@ -169,7 +161,6 @@ th {
 
   .row {
     display: flex;
-    /* flex-wrap: wrap; */
     flex-direction: row;
     justify-content: center;
     gap: 5px;
@@ -275,10 +266,6 @@ th {
   margin-bottom: 10px;
 }
 
-/* .tableResult th, td {
-  padding: 8px; 
-} */
-
 /* --------Dark Mode------------ */
 
 .darkMode .button {
@@ -303,6 +290,13 @@ th {
 
 .darkMode .blackFieldDark {
   background-color: white;
+}
+
+
+
+.darkMode .fieldZero {
+  background-color: rgb(179, 178, 178);
+  color: rgb(179, 178, 178);
 }
 
 .fieldLeftDark {
